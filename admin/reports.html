@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="../images/favicon.svg" type="image/svg+xml">
+  <link rel="shortcut icon" href="../images/logo.jpg">
+  <title>پنل مدیریت | گزارش‌ها</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div id="navbar"></div>
+
+  <div class="container my-4">
+    <div class="row">
+      <div class="col-md-3 mb-3" id="sidebar"></div>
+      <div class="col-md-9">
+        <div class="panel-box">
+          <h4 class="mb-3">گزارش‌های سامانه</h4>
+          <div id="reportBox"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/data.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/common.js"></script>
+  <script>
+    requireAdmin();
+    renderAdminSidebar("reports");
+
+    var books = getData("books") || [];
+    var users = getData("users") || [];
+    var requests = getData("requests") || [];
+    var donations = getData("donations") || [];
+    var orders = getData("orders") || [];
+    var fines = getData("fines") || [];
+
+    var totalStock = 0;
+    for (var i = 0; i < books.length; i++) totalStock += Number(books[i].stock);
+
+    var saleSum = 0;
+    for (var i = 0; i < orders.length; i++) saleSum += Number(orders[i].amount);
+
+    var borrowCount = 0, rentCount = 0, returnedCount = 0;
+    for (var i = 0; i < requests.length; i++) {
+      if (requests[i].type === "borrow") borrowCount++;
+      if (requests[i].type === "rent") rentCount++;
+      if (requests[i].status === "returned") returnedCount++;
+    }
+
+    var fineSum = 0, finePaid = 0;
+    for (var i = 0; i < fines.length; i++) {
+      fineSum += Number(fines[i].amount);
+      if (fines[i].paid) finePaid += Number(fines[i].amount);
+    }
+
+    var receivedDon = 0;
+    for (var i = 0; i < donations.length; i++) {
+      if (donations[i].status === "received") receivedDon++;
+    }
+
+    var html = "";
+    html += '<ul class="list-group">';
+    html += '<li class="list-group-item">تعداد کتاب‌های ثبت‌شده: <strong>' + books.length + "</strong></li>";
+    html += '<li class="list-group-item">مجموع موجودی کتاب‌ها: <strong>' + totalStock + "</strong></li>";
+    html += '<li class="list-group-item">تعداد کاربران: <strong>' + users.length + "</strong></li>";
+    html += '<li class="list-group-item">تعداد سفارش فروش: <strong>' + orders.length + "</strong> | مبلغ کل: <strong>" + formatPrice(saleSum) + "</strong></li>";
+    html += '<li class="list-group-item">درخواست امانت: <strong>' + borrowCount + "</strong> | درخواست اجاره: <strong>" + rentCount + "</strong></li>";
+    html += '<li class="list-group-item">کتاب‌های بازگشت‌شده: <strong>' + returnedCount + "</strong></li>";
+    html += '<li class="list-group-item">مجموع جریمه‌ها: <strong>' + formatPrice(fineSum) + "</strong> | پرداخت‌شده: <strong>" + formatPrice(finePaid) + "</strong></li>";
+    html += '<li class="list-group-item">کتاب‌های اهدایی دریافت‌شده: <strong>' + receivedDon + "</strong></li>";
+    html += "</ul>";
+
+    document.getElementById("reportBox").innerHTML = html;
+  </script>
+</body>
+</html>

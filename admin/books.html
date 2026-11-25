@@ -1,0 +1,215 @@
+﻿<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="../images/favicon.svg" type="image/svg+xml">
+  <link rel="shortcut icon" href="../images/logo.jpg">
+  <title>پنل مدیریت | کتاب‌ها</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div id="navbar"></div>
+
+  <div class="container my-4">
+    <div class="row">
+      <div class="col-md-3 mb-3" id="sidebar"></div>
+      <div class="col-md-9">
+        <div class="panel-box">
+          <h4 class="mb-3">افزودن / ویرایش کتاب</h4>
+          <form onsubmit="saveBook(event)">
+            <input type="hidden" id="editId" value="">
+            <div class="row">
+              <div class="col-md-6 mb-2">
+                <label class="form-label">عنوان</label>
+                <input type="text" id="title" class="form-control" required>
+              </div>
+              <div class="col-md-6 mb-2">
+                <label class="form-label">نویسنده</label>
+                <input type="text" id="author" class="form-control" required>
+              </div>
+              <div class="col-md-4 mb-2">
+                <label class="form-label">دسته‌بندی</label>
+                <select id="categoryId" class="form-select"></select>
+              </div>
+              <div class="col-md-4 mb-2">
+                <label class="form-label">قیمت فروش</label>
+                <input type="number" id="price" class="form-control" required>
+              </div>
+              <div class="col-md-4 mb-2">
+                <label class="form-label">قیمت اجاره</label>
+                <input type="number" id="rentPrice" class="form-control" required>
+              </div>
+              <div class="col-md-4 mb-2">
+                <label class="form-label">موجودی</label>
+                <input type="number" id="stock" class="form-control" min="0" required>
+              </div>
+              <div class="col-md-4 mb-2">
+                <label class="form-label">ناشر</label>
+                <input type="text" id="publisher" class="form-control">
+              </div>
+              <div class="col-md-4 mb-2">
+                <label class="form-label">سال</label>
+                <input type="number" id="year" class="form-control">
+              </div>
+              <div class="col-12 mb-2">
+                <label class="form-label">توضیحات</label>
+                <textarea id="description" class="form-control" rows="2"></textarea>
+              </div>
+              <div class="col-12 mb-2">
+                <label class="me-3"><input type="checkbox" id="forSale" checked> فروش</label>
+                <label class="me-3"><input type="checkbox" id="forRent" checked> اجاره</label>
+                <label class="me-3"><input type="checkbox" id="forBorrow" checked> امانت</label>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-main">ذخیره</button>
+            <button type="button" class="btn btn-secondary" onclick="resetForm()">پاک کردن فرم</button>
+          </form>
+        </div>
+
+        <div class="panel-box">
+          <h4 class="mb-3">لیست کتاب‌ها</h4>
+          <div class="table-responsive">
+            <table class="table table-bordered table-sm">
+              <thead>
+                <tr>
+                  <th>عنوان</th>
+                  <th>دسته</th>
+                  <th>قیمت</th>
+                  <th>موجودی</th>
+                  <th>عملیات</th>
+                </tr>
+              </thead>
+              <tbody id="tableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/data.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/common.js"></script>
+  <script>
+    requireAdmin();
+    renderAdminSidebar("books");
+
+    var cats = getData("categories") || [];
+    var catSel = document.getElementById("categoryId");
+    for (var i = 0; i < cats.length; i++) {
+      var opt = document.createElement("option");
+      opt.value = cats[i].id;
+      opt.textContent = cats[i].name;
+      catSel.appendChild(opt);
+    }
+
+    showBooks();
+
+    function showBooks() {
+      var books = getData("books") || [];
+      var html = "";
+      for (var i = 0; i < books.length; i++) {
+        var b = books[i];
+        html += "<tr>";
+        html += "<td>" + b.title + "</td>";
+        html += "<td>" + getCategoryName(b.categoryId) + "</td>";
+        html += "<td>" + formatPrice(b.price) + "</td>";
+        html += "<td>" + b.stock + "</td>";
+        html += "<td>";
+        html += '<button class="btn btn-sm btn-warning me-1" onclick="editBook(' + b.id + ')">ویرایش</button>';
+        html += '<button class="btn btn-sm btn-danger" onclick="deleteBook(' + b.id + ')">حذف</button>';
+        html += "</td></tr>";
+      }
+      document.getElementById("tableBody").innerHTML = html || '<tr><td colspan="5">کتابی نیست</td></tr>';
+    }
+
+    function saveBook(e) {
+      e.preventDefault();
+      var books = getData("books") || [];
+      var editId = document.getElementById("editId").value;
+
+      var item = {
+        title: document.getElementById("title").value.trim(),
+        author: document.getElementById("author").value.trim(),
+        categoryId: Number(document.getElementById("categoryId").value),
+        price: Number(document.getElementById("price").value),
+        rentPrice: Number(document.getElementById("rentPrice").value),
+        stock: Number(document.getElementById("stock").value),
+        publisher: document.getElementById("publisher").value.trim(),
+        year: Number(document.getElementById("year").value) || null,
+        description: document.getElementById("description").value.trim(),
+        forSale: document.getElementById("forSale").checked,
+        forRent: document.getElementById("forRent").checked,
+        forBorrow: document.getElementById("forBorrow").checked
+      };
+
+      if (editId) {
+        for (var i = 0; i < books.length; i++) {
+          if (books[i].id == editId) {
+            item.id = books[i].id;
+            books[i] = item;
+          }
+        }
+      } else {
+        item.id = getNextId("book");
+        books.push(item);
+      }
+
+      setData("books", books);
+      resetForm();
+      showBooks();
+      alert("ذخیره شد");
+    }
+
+    function editBook(id) {
+      var b = getBookById(id);
+      if (!b) return;
+      document.getElementById("editId").value = b.id;
+      document.getElementById("title").value = b.title;
+      document.getElementById("author").value = b.author;
+      document.getElementById("categoryId").value = b.categoryId;
+      document.getElementById("price").value = b.price;
+      document.getElementById("rentPrice").value = b.rentPrice;
+      document.getElementById("stock").value = b.stock;
+      document.getElementById("publisher").value = b.publisher || "";
+      document.getElementById("year").value = b.year || "";
+      document.getElementById("description").value = b.description || "";
+      document.getElementById("forSale").checked = !!b.forSale;
+      document.getElementById("forRent").checked = !!b.forRent;
+      document.getElementById("forBorrow").checked = !!b.forBorrow;
+      window.scrollTo(0, 0);
+    }
+
+    function deleteBook(id) {
+      if (!confirm("آیا از حذف این کتاب مطمئن هستید؟")) return;
+      var books = getData("books") || [];
+      var newBooks = [];
+      for (var i = 0; i < books.length; i++) {
+        if (books[i].id != id) newBooks.push(books[i]);
+      }
+      setData("books", newBooks);
+      showBooks();
+    }
+
+    function resetForm() {
+      document.getElementById("editId").value = "";
+      document.getElementById("title").value = "";
+      document.getElementById("author").value = "";
+      document.getElementById("price").value = "";
+      document.getElementById("rentPrice").value = "";
+      document.getElementById("stock").value = "";
+      document.getElementById("publisher").value = "";
+      document.getElementById("year").value = "";
+      document.getElementById("description").value = "";
+      document.getElementById("forSale").checked = true;
+      document.getElementById("forRent").checked = true;
+      document.getElementById("forBorrow").checked = true;
+    }
+  </script>
+</body>
+</html>
