@@ -81,16 +81,15 @@ img {
   height: 44px;
   border-radius: 12px;
   display: block;
+  padding: 5px;
+  background: var(--paper-2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
 }
 
 .logo-showcase {
-  width: 140px;
-  height: 140px;
-  object-fit: cover;
-  border-radius: 28px;
-  background: #fff;
-  border: 1px solid var(--line);
-  box-shadow: var(--shadow);
+  width: 180px;
+  height: auto;
+  object-fit: contain;
   display: block;
 }
 
@@ -168,16 +167,12 @@ img {
 }
 
 .hero-brand {
-  display: inline-block;
-  font-size: clamp(3rem, 8vw, 5.5rem);
-  font-weight: 800;
-  line-height: 1;
+  display: block;
+  width: clamp(180px, 34vw, 300px);
+  height: auto;
   margin-bottom: 18px;
+  filter: drop-shadow(0 3px 7px rgba(0, 0, 0, 0.55));
   animation: fadeUp 0.7s ease both;
-}
-
-.hero-brand span {
-  color: #9fd9c5;
 }
 
 .hero h1 {

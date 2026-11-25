@@ -64,7 +64,7 @@ function renderNavbar() {
   html += '<div class="container">';
   html += '<a class="navbar-brand d-flex align-items-center gap-2" href="' + base + 'index.html">';
   html += '<img src="' + base + 'images/logo.svg" alt="ورق" class="brand-mark">';
-  html += '<span>ور<span>ق</span></span></a>';
+  html += '</a>';
   html += '<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">';
   html += '<span class="navbar-toggler-icon"></span></button>';
   html += '<div class="collapse navbar-collapse" id="mainNav">';
@@ -91,7 +91,7 @@ function renderFooter() {
   html += '<div class="col-md-5">';
   html += '<div class="d-flex align-items-center gap-2 mb-3">';
   html += '<img src="' + base + 'images/logo.svg" alt="ورق" class="brand-mark-lg">';
-  html += "<h5 class='mb-0'>ورق</h5></div>";
+  html += "</div>";
   html += "<p>فروشگاه و کتابخانه آنلاین برای خرید، اجاره، امانت و اهدای کتاب. اینجا می‌توانید کتاب بعدی‌تان را پیدا کنید.</p>";
   html += "</div>";
   html += '<div class="col-md-3">';
