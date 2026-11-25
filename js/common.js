@@ -173,4 +173,13 @@ function getQueryParam(name) {
 document.addEventListener("DOMContentLoaded", function () {
   renderNavbar();
   renderFooter();
+
+  var updateHomeNavbar = function () {
+    if (document.body.classList.contains("home-page")) {
+      document.body.classList.toggle("is-scrolled", window.scrollY > 24);
+    }
+  };
+
+  updateHomeNavbar();
+  window.addEventListener("scroll", updateHomeNavbar, { passive: true });
 });

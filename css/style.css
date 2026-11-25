@@ -887,6 +887,59 @@ img {
 }
 
 @media (max-width: 576px) {
+  body.home-page .site-nav {
+    position: fixed;
+    inset: 0 0 auto;
+    background: transparent;
+    border-bottom: 0;
+    backdrop-filter: none;
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+
+  body.home-page .navbar-brand {
+    display: none !important;
+  }
+
+  body.home-page .navbar-toggler {
+    margin-inline-start: auto;
+    border-color: rgba(255, 255, 255, 0.7);
+    background: rgba(20, 34, 31, 0.35);
+  }
+
+  body.home-page .navbar-toggler-icon {
+    filter: brightness(0) invert(1);
+  }
+
+  body.home-page .navbar-collapse {
+    margin-top: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 12px;
+    background: rgba(20, 34, 31, 0.94);
+  }
+
+  body.home-page .navbar-collapse .nav-link {
+    color: #fff !important;
+  }
+
+  body.home-page.is-scrolled .site-nav {
+    background: rgba(255, 253, 249, 0.96);
+    border-bottom: 1px solid var(--line);
+    backdrop-filter: blur(10px);
+  }
+
+  body.home-page.is-scrolled .navbar-brand {
+    display: flex !important;
+  }
+
+  body.home-page.is-scrolled .navbar-toggler {
+    border-color: var(--line);
+    background: transparent;
+  }
+
+  body.home-page.is-scrolled .navbar-toggler-icon {
+    filter: invert(0.4);
+  }
+
   .service-row,
   .steps-row,
   .why-grid {
