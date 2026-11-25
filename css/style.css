@@ -894,7 +894,39 @@ img {
   }
 
   .hero-inner {
-    padding: 48px 0 56px;
+    padding: 40px 12px 48px;
+  }
+
+  .hero {
+    min-height: 78vh;
+    min-height: 78svh;
+    background-position: 42% center;
+  }
+
+  .hero-brand {
+    width: min(62vw, 220px);
+    margin-bottom: 14px;
+  }
+
+  .hero h1 {
+    max-width: 32rem;
+    font-size: clamp(1.3rem, 5.8vw, 1.65rem);
+    line-height: 1.65;
+  }
+
+  .hero p {
+    max-width: 30rem;
+    font-size: 0.95rem;
+    line-height: 1.8;
+    margin-bottom: 20px;
+  }
+
+  .hero-actions {
+    gap: 10px;
+  }
+
+  .hero-actions .btn {
+    padding: 0.65rem 1rem;
   }
 
   .cta-band,
