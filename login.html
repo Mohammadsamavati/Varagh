@@ -12,32 +12,47 @@
 <body>
   <div id="navbar"></div>
 
-  <div class="container">
-    <div class="form-box">
+  <main class="login-page">
+    <div class="container">
+      <div class="login-layout">
+        <aside class="login-showcase">
+          <a href="index.html" class="login-logo-wrap" aria-label="بازگشت به صفحه اصلی">
+            <img src="images/logo.svg" alt="ورق" class="login-logo">
+          </a>
+          <div class="login-art" aria-hidden="true">
+            <span class="login-art-book book-one"></span>
+            <span class="login-art-book book-two"></span>
+            <span class="login-art-book book-three"></span>
+          </div>
+          <div class="login-showcase-copy">
+            <span class="login-eyebrow">جایی برای دوست‌داران کتاب</span>
+            <h1>صفحه‌ی بعدی<br>از همین‌جا شروع می‌شود.</h1>
+            <p>وارد دنیای ورق شو؛ کتابی برای خواندن پیدا کن، کتابی را به اشتراک بگذار و مسیرت را ادامه بده.</p>
+          </div>
+          <div class="login-showcase-foot"><span class="login-sparkle" aria-hidden="true">✦</span><span>هر ورق، یک شروع تازه</span></div>
+        </aside>
+        <div class="form-box login-form-panel">
       <h4 class="mb-1 text-center">ورود به ورق</h4>
       <p class="text-center text-muted mb-4">به حساب کاربری‌ات وارد شو</p>
       <form onsubmit="doLogin(event)">
         <div class="mb-3">
-          <label class="form-label">ایمیل</label>
-          <input type="email" id="email" class="form-control" required>
+          <label class="form-label" for="email">ایمیل</label>
+          <input type="email" id="email" class="form-control" placeholder="name@example.com" autocomplete="email" required>
         </div>
         <div class="mb-3">
-          <label class="form-label">رمز عبور</label>
-          <input type="password" id="password" class="form-control" required>
+          <label class="form-label" for="password">رمز عبور</label>
+          <input type="password" id="password" class="form-control" placeholder="رمز عبورت را وارد کن" autocomplete="current-password" required>
         </div>
         <button type="submit" class="btn btn-main w-100">ورود</button>
       </form>
       <p class="mt-3 text-center mb-0">
         حساب نداری؟ <a href="register.html">عضویت در ورق</a>
       </p>
-      <div class="alert alert-sample mt-3">
-        برای تست:<br>
-        مدیر: admin@varagh.ir / admin123<br>
-        کاربر: ali@gmail.com / 123456
-      </div>
       <div id="loginError" class="mt-2"></div>
+        </div>
+      </div>
     </div>
-  </div>
+  </main>
 
   <div id="footer"></div>
 
